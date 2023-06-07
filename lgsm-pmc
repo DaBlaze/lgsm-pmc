@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# Created by DaBlaze
+# https://dablaze.io
+
+# echo colors
+default="\e[0m"
+black="\e[30m"
+red="\e[31m"
+lightred="\e[91m"
+green="\e[32m"
+lightgreen="\e[92m"
+yellow="\e[33m"
+lightyellow="\e[93m"
+blue="\e[34m"
+lightblue="\e[94m"
+magenta="\e[35m"
+lightmagenta="\e[95m"
+cyan="\e[36m"
+lightcyan="\e[96m"
+darkgrey="\e[90m"
+lightgrey="\e[37m"
+white="\e[97m"
+
+rootdir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+serverfiles="${rootdir}/serverfiles"
+selfname=$(basename "$(readlink -f "${BASH_SOURCE[0]}")")
+
+if [ "$1" == "backup" ] || [ "$1" == "b" ]; then
+	# BACKUP SERVER
+	command ./pmcserver send "broadcast The server will restart in 1 minutes."
+	sleep 60
+	command ./pmcserver backup
+
+elif [ "$1" == "ban-ip" ] || [ "$1" == "bi" ]; then
+	# BAN IP
+	command ./pmcserver send "ban-ip $2 $3"
+
+elif [ "$1" == "ban-user" ] || [ "$1" == "bu" ]; then
+	# BAN USER
+	command ./pmcserver send "ban $2 $3"
+
+elif [ "$1" == "broadcast" ] || [ "$1" == "bc" ]; then
+	# BROADCAST MESSAGE TO SERVER
+	command ./pmcserver send "broadcast $2"
+
+elif [ "$1" == "restart" ] || [ "$1" == "r" ]; then
+	# RESTART SERVER
+	command ./pmcserver send "broadcast The server will restart in 15 seconds."
+	sleep 15
+	command ./pmcserver restart
+
+elif [ "$1" == "start" ] || [ "$1" == "st" ]; then
+	# START SERVER
+	command ./pmcserver start
+
+elif [ "$1" == "stop" ] || [ "$1" == "sp" ]; then
+	# STOP SERVER
+	command ./pmcserver send "broadcast Server will shut down in 30 seconds."
+	sleep 30
+	command ./pmcserver stop
+
+elif [ "$1" == "unban-user" ] || [ "$1" == "uu" ]; then
+	# UNBAN USER
+	command ./pmcserver send "unban $2"
+
+elif [ "$1" == "update-lgsm" ] || [ "$1" == "ul" ]; then
+	# UPDATE LGSM
+	echo -e "Checking for lgsm updates"
+	command ./pmcserver send "broadcast Server will check for updates in 30 seconds. Restart may be needed."
+	sleep 30
+	command ./pmcserver update-lgsm
+
+elif [ "$1" == "whitelist-add" ] || [ "$1" == "wa" ]; then
+	# WHITELIST ADD
+	command ./pmcserver send "whitelist add $2"
+
+elif [ "$1" == "whitelist-remove" ] || [ "$1" == "wr" ]; then
+	# WHITELIST REMOVE
+	command ./pmcserver send "whitelist add $2"
+
+else
+	echo -e "\nCreated by DaBlaze"
+	echo -e "https://dablaze.io"
+	echo -e "\nUsage: ./${selfname} [option]"
+	echo -e "\n${lightyellow}Commands"
+	echo -e "${cyan}backup\t\t\t${default}b\t| Stop and backup the server with an alert and delay."
+	echo -e "${cyan}ban-ip\t\t\t${default}bi\t| Ban an ip from the server."
+	echo -e "${cyan}ban-user\t\t${default}bu\t| Ban a user from the server."
+	echo -e "${cyan}broadcast\t\t${default}bc\t| Send a broadcast message to the server (Remember quotes!)."
+	echo -e "${cyan}restart\t\t\t${default}r\t| Restart the server with an alert and delay."
+	echo -e "${cyan}start\t\t\t${default}st\t| Start the server."
+	echo -e "${cyan}stop\t\t\t${default}sp\t| Stop the server with delay."
+	echo -e "${cyan}unban-ip\t\t${default}ui\t| Unban an ip from the server."
+	echo -e "${cyan}unban-user\t\t${default}uu\t| Unban a user from the server."
+	echo -e "${cyan}update-lgsm\t\t${default}ul\t| Update lgsm with an alert and delay."
+	echo -e "${cyan}whitelist-add\t\t${default}wa\t| Add user to server whitelist."
+	echo -e "${cyan}whitelist-remove\t${default}wr\t| Remove user from server whitelist."
+fi
