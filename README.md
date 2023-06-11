@@ -38,13 +38,14 @@ whitelist-remove        wr      | Remove user from server whitelist.
 
 ### Cron Usage
 
-Send broadcast to server at 5am (UTC):
+#### As User:
 
 ```bash
-0 5 * * *  su - pmcserver -c '/home/pmcserver/lgsm-pmc broadcast "Server will update in 1 minute. (Will restart)"' > /dev/null 2>&1
+* * * * * [/path/to/script] [command] > /dev/null 2>&1
 ```
-Send 1 minute warning broadcast to server at 9:59am (UTC) and backup:
+
+#### As Root:
 
 ```bash
-59 9 * * *  su - pmcserver -c '/home/pmcserver/lgsm-pmc backup' > /dev/null 2>&1
+* * * * * su - username -c '[/path/to/script] [command]' > /dev/null 2>&1
 ```
